@@ -1,5 +1,4 @@
 streamlit
-langchain_groq
-langchain_openai
+langchain
 huggingface_hub
 pillow
