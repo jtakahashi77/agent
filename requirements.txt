@@ -3,3 +3,7 @@ langchain_groq
 langchain_openai
 huggingface_hub
 pillow
+zipfile
+io
+os
+

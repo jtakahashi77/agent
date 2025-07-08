@@ -5,6 +5,9 @@ from huggingface_hub import InferenceClient
 import replicate
 import os
 import streamlit as st
+import zipfile
+import io
+import os
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 imgdir = os.path.join(script_dir, "ad_assets/images")
@@ -121,3 +124,25 @@ if st.button("Generate Storyboard and Images") and ad_concept.strip():
                     st.error(f"Image generation failed: {e}")
 else:
     st.info("Enter your ad concept and click 'Generate Storyboard and Images'.")
+    
+# Gather all image file paths
+image_paths = [p["image_file"] for p in scene_prompts if "image_file" in p]
+
+if image_paths:
+    # Create a BytesIO buffer for the ZIP file
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        for path in image_paths:
+            arcname = os.path.basename(path)  # Just filename in archive
+            zip_file.write(path, arcname=arcname)
+    zip_buffer.seek(0)  # Move to the beginning
+
+    # Streamlit download button for ZIP
+    st.download_button(
+        label="Download all images as ZIP",
+        data=zip_buffer,
+        file_name="all_scenes.zip",
+        mime="application/zip"
+    )
+else:
+    st.info("No images found to zip. Please generate images first.")
