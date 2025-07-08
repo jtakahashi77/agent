@@ -2,7 +2,6 @@ from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from huggingface_hub import InferenceClient
-import replicate
 import os
 import streamlit as st
 import zipfile
